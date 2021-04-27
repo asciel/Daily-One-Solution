@@ -1,0 +1,44 @@
+# 938. 二叉搜索树的范围和
+
+- 问题描述
+
+>给定二叉搜索树的根结点 `root`，返回值位于范围 *`[low, high]`* 之间的所有结点的值的和。
+
+- 问题解决
+  - 此题就是遍历二叉搜索树，将满足条件的节点的值进行相加即可
+  - 不过此题有一个可以优化的点，就是利用中序遍历的有序性进行剪枝
+  - 如果当前节点的值小于`low`，那么说明当前节点的左子树都小于`low`，于是不需要遍历，同理，如果大于`high`那么说明当前节点的右子树都大于`high`，也不需要遍历，这样就可以将时间空间节省，时间从击败`55%`到击败`100%`
+
+- 问题代码
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int sum = 0;
+    private void inOrder(TreeNode cur, int low, int high) {
+        if (cur == null  ) return ;
+        if (cur.left != null && cur.val >= low) inOrder(cur.left, low, high);
+        if (cur.val >= low && cur.val <= high) sum += cur.val;
+        if (cur.right != null && cur.val <= high) inOrder(cur.right, low, high);
+    }
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        inOrder(root, low, high);
+        return sum;
+    }
+}
+```
+
