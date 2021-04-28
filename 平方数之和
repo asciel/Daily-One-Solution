@@ -1,0 +1,32 @@
+# 633. 平方数之和	
+
+- 问题描述
+
+  > 给定一个非负整数 `c` ，你要判断是否存在两个整数 `a` 和 `b`，使得 a^2 + b^2 = c
+
+- 问题分析
+  - 又是可以确定上下界的一题，其中上界是`sqrt(c)`，下界是`0`
+  - 此题用双指针可以覆盖所有可能的情况，当和较小的时候，让左边界向右移动，否则，让右边界向左移动。
+  - 但是此题的难点不在于分析出双指针的做法，而是证明双指针做法的正确性
+    - https://leetcode-cn.com/problems/sum-of-square-numbers/solution/shuang-zhi-zhen-de-ben-zhi-er-wei-ju-zhe-ebn3/
+- 问题代码
+
+```java
+class Solution {
+    public boolean judgeSquareSum(int c) {
+        int a = 0, b = (int) Math.sqrt(c);
+        while (a <= b) {
+            int mid = (a + b) >> 1;
+            if (a*a + b*b < c) {
+                a = mid;
+            } else if (a*a + b*b > c){
+                b = mid;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
